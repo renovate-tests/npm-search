@@ -24,15 +24,21 @@ const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
 const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
-setSettings(mainIndex)
-  .then(() => setSettings(bootstrapIndex))
-  .then(() => stateManager.check())
-  .then(bootstrap)
-  .then(() => stateManager.get())
-  .then(replicate)
-  .then(() => stateManager.get())
-  .then(watch)
-  .catch(error);
+async function main() {
+  await setSettings(mainIndex);
+  await setSettings(bootstrapIndex);
+
+  const preBootstrapState = await stateManager.check();
+  await bootstrap(preBootstrapState);
+
+  const preReplicateState = await stateManager.get();
+  await replicate(preReplicateState);
+
+  const preWatchState = await stateManager.get();
+  await watch(preWatchState);
+}
+
+main().catch(error);
 
 async function setSettings(index) {
   await index.setSettings(c.indexSettings);
