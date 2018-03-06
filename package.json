@@ -24,10 +24,8 @@
   },
   "renovate": {
     "extends": [
-      "config:js-app",
-      "algolia"
-    ],
-    "schedule": null
+      "config:js-app"
+    ]
   },
   "license": "MIT",
   "dependencies": {
