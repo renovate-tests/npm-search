@@ -26,7 +26,8 @@
     "extends": [
       "config:js-app",
       "algolia"
-    ]
+    ],
+    "schedule": null
   },
   "license": "MIT",
   "dependencies": {
